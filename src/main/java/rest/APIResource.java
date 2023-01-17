@@ -16,7 +16,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.core.UriInfo;
 
-@Path("boatstuesday")
+@Path("exam")
 @DeclareRoles({"user", "admin"})
 public class APIResource {
     private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory();
@@ -34,7 +34,7 @@ public class APIResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String welcomeGreeting() {
-        return "{\"msg\":\"Hello boatsman\"}";
+        return "{\"msg\":\"Hello you\"}";
     }
 
 //    @GET

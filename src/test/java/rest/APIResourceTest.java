@@ -156,7 +156,7 @@ public class APIResourceTest {
     @Test
     public void testAPIResourceIsResponding() {
 
-        given().when().get("/boatstuesday").then().statusCode(200);
+        given().when().get("/exam").then().statusCode(200);
     }
 
     @Test
@@ -174,10 +174,10 @@ public class APIResourceTest {
     void welcomeGreeting() {
         given()
                 .contentType("application/json")
-                .when().get("/boatstuesday")
+                .when().get("/exam")
                 .then().statusCode(200)
                 .assertThat()
-                .body("msg", equalTo("Hello boatsman"));
+                .body("msg", equalTo("Hello you"));
     }
 
 //    @Test
