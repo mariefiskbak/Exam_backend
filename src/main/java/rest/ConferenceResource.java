@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import dtos.TalkDTO;
 import facades.ConferenceFacade;
 import facades.APIFacade;
+import facades.Populator;
 import utils.EMF_Creator;
 
 import javax.persistence.EntityManagerFactory;
@@ -41,9 +42,18 @@ public class ConferenceResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String getAllConferences() {
+        Populator.populate();
         List<TalkDTO.ConferenceInnerDTO> conferenceDTOList = facade.getAllConferences();
         return GSON.toJson(conferenceDTOList);
     }
 
+    @Path("populate")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public String populate() {
+        Populator.populate();
+        List<TalkDTO> talkDTOList = facade.getAllTalks();
+        return GSON.toJson(talkDTOList);
+    }
 
 }
