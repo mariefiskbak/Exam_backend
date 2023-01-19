@@ -5,8 +5,11 @@
  */
 package facades;
 
+import entities.Role;
+import entities.User;
 import utils.EMF_Creator;
 
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
 /**
@@ -20,24 +23,27 @@ public class Populator {
 
     public static void populate() {
 
-//        EntityManager em = emf.createEntityManager();
-//        //Create test users
-//        User user = new User("user", "As123456");
-//        User admin = new User("admin", "JK123456");
+        EntityManager em = emf.createEntityManager();
+        //Create test users
+        User user = new User("user", "123");
+        User admin = new User("admin", "123");
 //        User both = new User("user_admin", "DQ123456");
-//
-//        em.getTransaction().begin();
-//        Role userRole = new Role("user");
-//        Role adminRole = new Role("admin");
-//        user.addRole(userRole);
-//        admin.addRole(adminRole);
+
+        em.getTransaction().begin();
+        Role userRole = new Role("user");
+        Role adminRole = new Role("admin");
+        user.addRole(userRole);
+        admin.addRole(adminRole);
 //        both.addRole(userRole);
 //        both.addRole(adminRole);
-//        em.persist(userRole);
-//        em.persist(adminRole);
-//        em.persist(user);
-//        em.persist(admin);
+        em.persist(userRole);
+        em.persist(adminRole);
+        em.persist(user);
+        em.persist(admin);
 //        em.persist(both);
+
+        em.getTransaction().commit();
+        em.close();
 //
 ////        Add owners
 //        Owner o1 = new Owner("Skipper Bænt", "Persillehaven 40", "38383838");
