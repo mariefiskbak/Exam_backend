@@ -42,7 +42,6 @@ public class ConferenceResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String getAllConferences() {
-        Populator.populate();
         List<TalkDTO.ConferenceInnerDTO> conferenceDTOList = facade.getAllConferences();
         return GSON.toJson(conferenceDTOList);
     }
