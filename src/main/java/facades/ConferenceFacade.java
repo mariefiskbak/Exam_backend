@@ -6,7 +6,9 @@ import entities.Talk;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import javax.ws.rs.WebApplicationException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,7 +63,7 @@ public class ConferenceFacade {
 
     public List<TalkDTO> getTalksBeConferenceId(Long conferenceId) {
         List<TalkDTO> talkDTOList = new ArrayList<>();
-        EntityManager em = emf.createEntityManager();
+        EntityManager em = getEntityManager();
         try {
             Conference conference = em.createQuery("SELECT c FROM Conference c WHERE c.id = :conferenceId", Conference.class)
                     .setParameter("conferenceId", conferenceId).getSingleResult();
@@ -75,7 +77,7 @@ public class ConferenceFacade {
     }
 
     public TalkDTO.ConferenceInnerDTO createConference(Conference conference) {
-        EntityManager em = emf.createEntityManager();
+        EntityManager em = getEntityManager();
         try {
             em.getTransaction().begin();
             em.persist(conference);
@@ -84,5 +86,41 @@ public class ConferenceFacade {
         } finally {
             em.close();
         }
+    }
+
+    public TalkDTO getTalkByTalkId(Long talkId) {
+        EntityManager em = getEntityManager();
+        try {
+            Talk talk = em.createQuery("SELECT t FROM Talk t WHERE t.id = :talkId", Talk.class)
+                    .setParameter("talkId", talkId).getSingleResult();
+            return new TalkDTO(talk);
+        } finally {
+            em.close();
+        }
+
+    }
+
+    public TalkDTO updateTalk(Talk talk) {
+        EntityManager em = getEntityManager();
+
+        Talk oldTalk = em.find(Talk.class, talk.getId());
+        if (oldTalk == null) {
+            throw new WebApplicationException(String.format("Talk with id: (%d) not found", talk.getId()), 400);
+        }
+
+        oldTalk.setTopic(talk.getTopic());
+        oldTalk.setDuration(talk.getDuration());
+        oldTalk.setPropsList(talk.getPropsList());
+
+        try {
+            em.getTransaction().begin();
+            em.merge(oldTalk);
+            em.getTransaction().commit();
+            return new TalkDTO(oldTalk);
+        } finally {
+            em.close();
+        }
+
+
     }
 }

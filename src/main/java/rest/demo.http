@@ -5,6 +5,7 @@ Content-Type: application/json
   "username": "admin",
   "password": "123"
 }
+
 ###
 GET http://localhost:8080/quickstart_war_exploded/api/info/admin
 X-Access-Token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGVzIjoiYWRtaW4iLCJleHAiOjE2NjcyOTk5NzEsImlhdCI6MTY2NzI5ODE3MSwiaXNzdWVyIjoic2VtZXN0ZXJzdGFydGNvZGUtZGF0MyIsInVzZXJuYW1lIjoiYWRtaW4ifQ.TOIzMcm5xiGfORrc8Egv_v3--4a4jtdY355OQ6v2nfA
@@ -22,21 +23,30 @@ POST http://localhost:8080/quickstart_war_exploded/api/info/pokemondeck
 Content-Type: application/json
 
 {
-"deckSize": "3"
+  "deckSize": "3"
 }
+
 ### Create Conference
 POST http://localhost:8080/exam/api/conference/newconference
 Content-Type: application/json
 
 {
-"name": "Test",
-"location": "Test",
-"capacity": 100,
-"date": "2023-03-03",
-"time": "13:00:00"
+  "name": "Test",
+  "location": "Test",
+  "capacity": 100,
+  "date": "2023-03-03",
+  "time": "13:00:00"
 }
 
+### Update Talk
+PUT http://localhost:8080/exam/api/conference/updatetalk/1
+Content-Type: application/json
 
+{
+  "topic": "Artificial Intelligens",
+  "duration": 100,
+  "propsList": "pen"
+}
 
 ### get number of users
 GET http://localhost:8080/exam/api/user/all

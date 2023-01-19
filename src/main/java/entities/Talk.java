@@ -28,13 +28,24 @@ public class Talk {
     public Talk() {
     }
 
-
+    public Talk(String topic, int duration, String propsList) {
+        this.topic = topic;
+        this.duration = duration;
+        this.propsList = propsList;
+    }
     public Talk(String topic, int duration, String propsList, Conference conference) {
         this.topic = topic;
         this.duration = duration;
         this.propsList = propsList;
 //        this.conference = conference;
         conference.addTalkToSet(this);
+    }
+
+    public Talk(Long talkId, String topic, int duration, String propsList) {
+        this.id = talkId;
+        this.topic = topic;
+        this.duration = duration;
+        this.propsList = propsList;
     }
 
     public Long getId() {
@@ -63,6 +74,22 @@ public class Talk {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public void setTopic(String topic) {
+        this.topic = topic;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+
+    public void setPropsList(String propsList) {
+        this.propsList = propsList;
+    }
+
+    public void setSpeakers(Set<Speaker> speakers) {
+        this.speakers = speakers;
     }
 
     public void setConference(Conference conference) {

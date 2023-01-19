@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import dtos.TalkDTO;
 import entities.Conference;
+import entities.Talk;
 import facades.ConferenceFacade;
 import facades.APIFacade;
 import facades.Populator;
@@ -51,6 +52,14 @@ public class ConferenceResource {
         return GSON.toJson(talkDTOList);
     }
 
+    @Path("talkid/{talkId}")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getTalkByTalkId(@PathParam("talkId") Long talkId) {
+        TalkDTO talkDTO = facade.getTalkByTalkId(talkId);
+        return GSON.toJson(talkDTO);
+    }
+
     @Path("all")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -79,11 +88,28 @@ public class ConferenceResource {
         String location = json.get("location").getAsString();
         int capacity = json.get("capacity").getAsInt();
         Date date = Date.valueOf(json.get("date").getAsString());
-        Time time = Time.valueOf(json.get("time").getAsString());
+        Time time = Time.valueOf(json.get("time").getAsString() + ":00");
 
         Conference conference = new Conference(name, location, capacity, date, time);
-return GSON.toJson(facade.createConference(conference));
+        return GSON.toJson(facade.createConference(conference));
     }
 
+    @PUT
+    @Path("updatetalk/{talkId}")
+    @Consumes("application/json")
+    @Produces("application/json")
+    public String updateTalk(@PathParam("talkId") Long talkId, String jdata) {
+        JsonObject json = JsonParser.parseString(jdata).getAsJsonObject();
+
+        String topic = json.get("topic").getAsString();
+        int duration = json.get("duration").getAsInt();
+        String propsList = json.get("propsList").getAsString();
+
+        //TODO conference and speakers
+
+        Talk talk = new Talk(talkId, topic, duration, propsList);
+        return GSON.toJson(facade.updateTalk(talk));
+
+    }
 
 }
