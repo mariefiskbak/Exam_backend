@@ -24,12 +24,16 @@ Content-Type: application/json
 {
 "deckSize": "3"
 }
-###
-POST http://localhost:8080/quickstart_war_exploded/api/info/cityinfo
+### Create Conference
+POST http://localhost:8080/exam/api/conference/newconference
 Content-Type: application/json
 
 {
-"query": "London"
+"name": "Test",
+"location": "Test",
+"capacity": 100,
+"date": "2023-03-03",
+"time": "13:00:00"
 }
 
 
