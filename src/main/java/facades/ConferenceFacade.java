@@ -1,6 +1,7 @@
 package facades;
 
 import dtos.TalkDTO;
+import entities.Conference;
 import entities.Talk;
 
 import javax.persistence.EntityManager;
@@ -44,5 +45,16 @@ public class ConferenceFacade {
             em.close();
         }
 
+    }
+
+    public List<TalkDTO.ConferenceInnerDTO> getAllConferences() {
+        EntityManager em = getEntityManager();
+        try {
+            TypedQuery<Conference> query = em.createQuery("SELECT c FROM Conference c", Conference.class);
+            List<Conference> conferences = query.getResultList();
+            return TalkDTO.ConferenceInnerDTO.getDTOs(conferences);
+        } finally {
+            em.close();
+        }
     }
 }

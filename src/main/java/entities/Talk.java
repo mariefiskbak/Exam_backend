@@ -2,7 +2,6 @@ package entities;
 
 import javax.persistence.*;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -19,10 +18,10 @@ public class Talk {
     private String propsList;
 
     @ManyToMany(mappedBy = "talkSet")
-    private Set<Speaker> speakerSet = new HashSet<>();
+    private Set<Speaker> speakers = new HashSet<>();
 
     @ManyToOne
-    @JoinColumn(name = "conference_id", nullable = false)
+    @JoinColumn(name = "conference_id")
     private Conference conference;
 
 
@@ -30,13 +29,12 @@ public class Talk {
     }
 
 
-    public Talk(Long id, String topic, int duration, String propsList, Set<Speaker> speakerSet, Conference conference) {
-        this.id = id;
+    public Talk(String topic, int duration, String propsList, Conference conference) {
         this.topic = topic;
         this.duration = duration;
         this.propsList = propsList;
-        this.speakerSet = speakerSet;
-        this.conference = conference;
+//        this.conference = conference;
+        conference.addTalkToSet(this);
     }
 
     public Long getId() {
@@ -55,8 +53,8 @@ public class Talk {
         return propsList;
     }
 
-    public Set<Speaker> getSpeakerSet() {
-        return speakerSet;
+    public Set<Speaker> getSpeakers() {
+        return speakers;
     }
 
     public Conference getConference() {
@@ -71,6 +69,11 @@ public class Talk {
         this.conference = conference;
     }
 
+    public void addSpeaker(Speaker speaker) {
+        speakers.add(speaker);
+        speaker.addTalk(this);
+
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -91,7 +94,7 @@ public class Talk {
                 ", topic='" + topic + '\'' +
                 ", duration=" + duration +
                 ", propsList='" + propsList + '\'' +
-                ", speakerSet=" + speakerSet +
+                ", speakers=" + speakers +
                 ", conference=" + conference +
                 '}';
     }

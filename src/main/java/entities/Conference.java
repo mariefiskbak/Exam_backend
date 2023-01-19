@@ -29,14 +29,12 @@ public class Conference {
 
 
 
-    public Conference(Long id, String name, String location, int capacity, Date date, Time time, Set<Talk> talks) {
-        this.id = id;
+    public Conference(String name, String location, int capacity, Date date, Time time) {
         this.name = name;
         this.location = location;
         this.capacity = capacity;
         this.date = date;
         this.time = time;
-        this.talks = talks;
     }
 
     public Long getId() {
@@ -97,5 +95,14 @@ public class Conference {
                 ", time=" + time +
                 ", talks=" + talks +
                 '}';
+    }
+
+    public void addTalk(Talk talk) {
+        talks.add(talk);
+    }
+
+    public void addTalkToSet(Talk talk) {
+        talks.add(talk);
+        talk.setConference(this);
     }
 }

@@ -5,12 +5,13 @@
  */
 package facades;
 
-import entities.Role;
-import entities.User;
+import entities.*;
 import utils.EMF_Creator;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import java.sql.Date;
+import java.sql.Time;
 
 /**
  * @author tha
@@ -27,67 +28,72 @@ public class Populator {
         //Create test users
         User user = new User("user", "123");
         User admin = new User("admin", "123");
-//        User both = new User("user_admin", "DQ123456");
 
         em.getTransaction().begin();
         Role userRole = new Role("user");
         Role adminRole = new Role("admin");
         user.addRole(userRole);
         admin.addRole(adminRole);
-//        both.addRole(userRole);
-//        both.addRole(adminRole);
+
         em.persist(userRole);
         em.persist(adminRole);
         em.persist(user);
         em.persist(admin);
-//        em.persist(both);
+
+//        em.getTransaction().commit();
+//        em.close();
+
+//        Add speakers
+        Speaker s1 = new Speaker("Pernille Hansen", "Doctor", "Female");
+        Speaker s2 = new Speaker("Rasmus White", "Teacher", "Male");
+        Speaker s3 = new Speaker("Anna Holmes", "Programmer", "Female");
+
+
+        Conference c1 = new Conference("January Summit", "Green Solution House", 300, Date.valueOf("2023-01-25"), Time.valueOf("15:00:00"));
+        Conference c2 = new Conference("Good Health", "Multihuset", 200, Date.valueOf("2023-04-10"), Time.valueOf("11:00:00"));
+        Conference c3 = new Conference("Child development", "Hotel Griffen", 150, Date.valueOf("2023-09-30"), Time.valueOf("10:00:00"));
+
+//TODO conference-id in the constructor?
+        Talk t1 = new Talk("Breastcancer", 100, "White board, laser pen", c2);
+        Talk t2 = new Talk("AI", 70, "laser pen", c1);
+        Talk t3 = new Talk("Importance of play", 60, "water, slideshow", c3);
+
+
+        //TODO not working..?
+        t1.addSpeaker(s1);
+        t2.addSpeaker(s3);
+        t3.addSpeaker(s2);
+        t1.addSpeaker(s3);
+
+
+////this doesnt add the conference id to the talk-table
+//        c1.addTalk(t2);
+//        c2.addTalk(t1);
+//        c3.addTalk(t3);
+
+
+        em.persist(s1);
+        em.persist(s2);
+        em.persist(s3);
+        em.persist(t1);
+        em.persist(t2);
+        em.persist(t3);
+        em.persist(c1);
+        em.persist(c2);
+        em.persist(c3);
 
         em.getTransaction().commit();
+        System.out.println("PW: " + user.getUserPass());
+        System.out.println("Testing user with OK password: " + user.verifyPassword("123"));
+        System.out.println("Testing user with wrong password: " + user.verifyPassword("test1"));
+        System.out.println("Created TEST Users");
+
         em.close();
-//
-////        Add owners
-//        Owner o1 = new Owner("Skipper Bænt", "Persillehaven 40", "38383838");
-//        Owner o2 = new Owner("Skipper Niels", "Persillehaven 42", "39393939");
-//        Owner o3 = new Owner("Skipper Bente", "Persillehaven 38", "40404040");
-//
-//        Harbour h1 = new Harbour("Melsted Havn", "Melsted byvej", 8);
-//        Harbour h2 = new Harbour("Nexø Havn", "Hovedvejen", 14);
-//        Harbour h3 = new Harbour("Aakirkeby Havn", "Melsted byvej", 32);
-//
-//        Boat b1 = new Boat("Boatmaster", "speeder", "Martha", "https://img.fruugo.com/product/8/58/278398588_max.jpg");
-//        Boat b2 = new Boat("Das Boot", "submarine", "Aase", "https://cdn.shopify.com/s/files/1/0626/0562/3537/products/31S6ddXfLmL.jpg?v=1659358008");
-//        Boat b3 = new Boat("Hanger", "supersize", "King Lincoln", "https://upload.wikimedia.org/wikipedia/commons/2/2d/USS_Nimitz_%28CVN-68%29.jpg");
-//
-//        b1.addOwner(o1);
-//        b2.addOwner(o1);
-//        b2.addOwner(o2);
-//        b3.addOwner(o1);
-//        b3.addOwner(o3);
-//
-//        h1.addBoat(b1);
-//        h3.addBoat(b2);
-//        h3.addBoat(b3);
-//
-//        em.persist(o1);
-//        em.persist(o2);
-//        em.persist(o3);
-//        em.persist(b1);
-//        em.persist(b2);
-//        em.persist(b3);
-//        em.persist(h1);
-//        em.persist(h2);
-//        em.persist(h3);
-//
-//        em.getTransaction().commit();
-//        System.out.println("PW: " + user.getUserPass());
-//        System.out.println("Testing user with OK password: " + user.verifyPassword("As123456"));
-//        System.out.println("Testing user with wrong password: " + user.verifyPassword("test1"));
-//        System.out.println("Created TEST Users");
-//
-////        Create dummy -owners
-////        FACADE.create(new Owner("Preben"));
-////        FACADE.create(new Owner("Poul"));
-//        em.close();
+    }
+
+    public static void main(String[] args) {
+
+//        populate();
     }
 
 }

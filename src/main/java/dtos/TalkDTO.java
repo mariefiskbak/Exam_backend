@@ -1,9 +1,12 @@
 package dtos;
 
+import entities.Conference;
 import entities.Speaker;
 import entities.Talk;
 
 import java.io.Serializable;
+import java.sql.Date;
+import java.sql.Time;
 import java.util.*;
 
 /**
@@ -14,24 +17,33 @@ public class TalkDTO implements Serializable {
     private final String topic;
     private final int duration;
     private final String propsList;
-    private final Set<SpeakerInnerDTO> speakerSet = new HashSet<>();
+    private final Set<SpeakerInnerDTO> speakers = new HashSet<>();
+    private final ConferenceInnerDTO conference;
 
-    public TalkDTO(Long id, String topic, int duration, String propsList) {
+
+    public TalkDTO(Long id, String topic, int duration, String propsList, ConferenceInnerDTO conference) {
         this.id = id;
         this.topic = topic;
         this.duration = duration;
         this.propsList = propsList;
+        this.conference = conference;
     }
 
+//    public TalkDTO(Long id, String topic, int duration, String propsList) {
+//        this.id = id;
+//        this.topic = topic;
+//        this.duration = duration;
+//        this.propsList = propsList;
+//    }
     public TalkDTO(Talk talk) {
         this.id = talk.getId();
         this.topic = talk.getTopic();
         this.duration = talk.getDuration();
         this.propsList = talk.getPropsList();
-        talk.getSpeakerSet().forEach(speaker -> {
-            speakerSet.add(new SpeakerInnerDTO(speaker));
+        talk.getSpeakers().forEach(speaker -> {
+            speakers.add(new SpeakerInnerDTO(speaker));
         });
-
+        this.conference = new ConferenceInnerDTO(talk.getConference());
 
     }
 
@@ -59,8 +71,12 @@ public class TalkDTO implements Serializable {
         return propsList;
     }
 
-    public Set<SpeakerInnerDTO> getSpeakerSet() {
-        return speakerSet;
+    public Set<SpeakerInnerDTO> getSpeakers() {
+        return speakers;
+    }
+
+    public TalkDTO.ConferenceInnerDTO getConference() {
+        return conference;
     }
 
     @Override
@@ -72,12 +88,12 @@ public class TalkDTO implements Serializable {
                 Objects.equals(this.topic, entity.topic) &&
                 Objects.equals(this.duration, entity.duration) &&
                 Objects.equals(this.propsList, entity.propsList) &&
-                Objects.equals(this.speakerSet, entity.speakerSet);
+                Objects.equals(this.speakers, entity.speakers);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, topic, duration, propsList, speakerSet);
+        return Objects.hash(id, topic, duration, propsList, speakers);
     }
 
     @Override
@@ -87,7 +103,8 @@ public class TalkDTO implements Serializable {
                 "topic = " + topic + ", " +
                 "duration = " + duration + ", " +
                 "propsList = " + propsList + ", " +
-                "speakerSet = " + speakerSet + ")";
+                "speakers = " + speakers + ", " +
+                "conference = " + conference + ")";
     }
 
     /**
@@ -152,6 +169,97 @@ public class TalkDTO implements Serializable {
                     "name = " + name + ", " +
                     "profession = " + profession + ", " +
                     "gender = " + gender + ")";
+        }
+    }
+
+    /**
+     * A DTO for the {@link Conference} entity
+     */
+    public static class ConferenceInnerDTO implements Serializable {
+        private final Long id;
+        private final String name;
+        private final String location;
+        private final int capacity;
+        private final java.sql.Date date;
+        private final Time time;
+
+        public ConferenceInnerDTO(Long id, String name, String location, int capacity, java.sql.Date date, Time time) {
+            this.id = id;
+            this.name = name;
+            this.location = location;
+            this.capacity = capacity;
+            this.date = date;
+            this.time = time;
+        }
+
+        public ConferenceInnerDTO(Conference conference) {
+            this.id = conference.getId();
+            this.name = conference.getName();
+            this.location = conference.getLocation();
+            this.capacity = conference.getCapacity();
+            this.date = conference.getDate();
+            this.time = conference.getTime();
+        }
+
+        public static List<ConferenceInnerDTO> getDTOs(List<Conference> conferences) {
+            List<ConferenceInnerDTO> conferenceDTOList = new ArrayList<>();
+            conferences.forEach(c -> {
+                conferenceDTOList.add(new ConferenceInnerDTO(c));
+            });
+            return conferenceDTOList;
+        }
+
+        public Long getId() {
+            return id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public String getLocation() {
+            return location;
+        }
+
+        public int getCapacity() {
+            return capacity;
+        }
+
+        public Date getDate() {
+            return date;
+        }
+
+        public Time getTime() {
+            return time;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            TalkDTO.ConferenceInnerDTO entity = (TalkDTO.ConferenceInnerDTO) o;
+            return Objects.equals(this.id, entity.id) &&
+                    Objects.equals(this.name, entity.name) &&
+                    Objects.equals(this.location, entity.location) &&
+                    Objects.equals(this.capacity, entity.capacity) &&
+                    Objects.equals(this.date, entity.date) &&
+                    Objects.equals(this.time, entity.time);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(id, name, location, capacity, date, time);
+        }
+
+        @Override
+        public String toString() {
+            return getClass().getSimpleName() + "(" +
+                    "id = " + id + ", " +
+                    "name = " + name + ", " +
+                    "location = " + location + ", " +
+                    "capacity = " + capacity + ", " +
+                    "date = " + date + ", " +
+                    "time = " + time + ")";
         }
     }
 }

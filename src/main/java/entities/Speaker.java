@@ -29,13 +29,10 @@ public class Speaker {
     }
 
 
-
-    public Speaker(Long id, String name, String profession, String gender, Set<Talk> talkSet) {
-        this.id = id;
+    public Speaker(String name, String profession, String gender) {
         this.name = name;
         this.profession = profession;
         this.gender = gender;
-        this.talkSet = talkSet;
     }
 
     public Long getId() {
@@ -80,6 +77,10 @@ public class Speaker {
                 ", gender='" + gender + '\'' +
                 ", talkSet=" + talkSet +
                 '}';
+    }
+
+    public void addTalk(Talk talk) {
+        talkSet.add(talk);
     }
 }
 

@@ -36,4 +36,14 @@ public class ConferenceResource {
         List<TalkDTO> talkDTOList = facade.getAllTalks();
         return GSON.toJson(talkDTOList);
     }
+
+    @Path("all")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getAllConferences() {
+        List<TalkDTO.ConferenceInnerDTO> conferenceDTOList = facade.getAllConferences();
+        return GSON.toJson(conferenceDTOList);
+    }
+
+
 }
