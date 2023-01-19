@@ -1,9 +1,9 @@
 package entities;
 
+import dtos.TalkDTO;
+
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "talk")
@@ -72,8 +72,17 @@ public class Talk {
     public void addSpeaker(Speaker speaker) {
         speakers.add(speaker);
         speaker.addTalk(this);
-
     }
+
+    public static List<TalkDTO> getTalkDTOList(List<Talk> talks) {
+        List<TalkDTO> talkDTOList = new ArrayList<>();
+        for (Talk talk : talks) {
+            TalkDTO talkDTO = new TalkDTO(talk);
+            talkDTOList.add(talkDTO);
+        }
+        return talkDTOList;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

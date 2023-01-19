@@ -2,7 +2,10 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import dtos.TalkDTO;
+import entities.Conference;
 import facades.ConferenceFacade;
 import facades.APIFacade;
 import facades.Populator;
@@ -14,6 +17,8 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.core.UriInfo;
+import java.sql.Date;
+import java.sql.Time;
 import java.util.List;
 
 @Path("/conference")
@@ -38,6 +43,14 @@ public class ConferenceResource {
         return GSON.toJson(talkDTOList);
     }
 
+    @Path("talks/{conferenceId}")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getTalksByConferenceId(@PathParam("conferenceId") Long conferenceId) {
+        List<TalkDTO> talkDTOList = facade.getTalksBeConferenceId(conferenceId);
+        return GSON.toJson(talkDTOList);
+    }
+
     @Path("all")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -54,5 +67,23 @@ public class ConferenceResource {
         List<TalkDTO> talkDTOList = facade.getAllTalks();
         return GSON.toJson(talkDTOList);
     }
+
+    @POST
+    @Path("newconference")
+    @Consumes("application/json")
+    @Produces("application/json")
+    public String createConference(String jdata) {
+        JsonObject json = JsonParser.parseString(jdata).getAsJsonObject();
+
+        String name = json.get("name").getAsString();
+        String location = json.get("location").getAsString();
+        int capacity = json.get("capacity").getAsInt();
+        Date date = Date.valueOf(json.get("date").getAsString());
+        Time time = Time.valueOf(json.get("time").getAsString());
+
+        Conference conference = new Conference(name, location, capacity, date, time);
+return GSON.toJson(facade.createConference(conference));
+    }
+
 
 }
