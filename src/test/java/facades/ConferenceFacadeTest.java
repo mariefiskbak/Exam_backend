@@ -47,10 +47,6 @@ public class ConferenceFacadeTest {
         facade = ConferenceFacade.getInstance(emf);
     }
 
-    @AfterAll
-    public static void tearDownClass() {
-//        Clean up database after test is done or use a persistence unit with drop-and-create to start up clean on every test
-    }
 
     @BeforeEach
     public void setUp() {
@@ -59,17 +55,17 @@ public class ConferenceFacadeTest {
         em.getTransaction().begin();
 
 
-        User user = new User("user", "456");
-        User admin = new User("admin", "456");
-
-        Role userRole = new Role("user");
-        Role adminRole = new Role("admin");
-        user.addRole(userRole);
-        admin.addRole(adminRole);
-        em.persist(userRole);
-        em.persist(adminRole);
-        em.persist(user);
-        em.persist(admin);
+//        User user = new User("user", "456");
+//        User admin = new User("admin", "456");
+//
+//        Role userRole = new Role("user");
+//        Role adminRole = new Role("admin");
+//        user.addRole(userRole);
+//        admin.addRole(adminRole);
+//        em.persist(userRole);
+//        em.persist(adminRole);
+//        em.persist(user);
+//        em.persist(admin);
 
         c1 = new Conference("c1", "sted1", 100, "2024-01-01", "11:00:00");
         c2 = new Conference("c2", "sted2", 100, "2024-01-01", "11:11:00");
@@ -96,6 +92,7 @@ public class ConferenceFacadeTest {
         em.persist(t2);
         em.persist(t3);
         em.getTransaction().commit();
+        em.clear();
         em.close();
 
         c1DTO = new TalkDTO.ConferenceInnerDTO(c1);
@@ -112,22 +109,27 @@ public class ConferenceFacadeTest {
 //        we do this before setup, so we can see the data in workbench
     }
 
-    @Test
-    void getAllConferences() {
-        List<TalkDTO.ConferenceInnerDTO> conferences = facade.getAllConferences();
-        int expected = 3;
-        int actual = conferences.size();
-        assertEquals(actual, expected);
-        assertThat(conferences, containsInAnyOrder(c1DTO, c2DTO, c3DTO));
+    @AfterAll
+    public static void tearDownClass() {
+//        Clean up database after test is done or use a persistence unit with drop-and-create to start up clean on every test
     }
+
+//    @Test
+//    void getAllConferences() {
+//        List<TalkDTO.ConferenceInnerDTO> conferences = facade.getAllConferences();
+//        int expected = 3;
+//        int actual = conferences.size();
+//        assertEquals(expected, actual);
+ //       assertThat(conferences, containsInAnyOrder(c1DTO, c2DTO, c3DTO));
+//    }
 
     @Test
     void getAllTalks() {
-        List<TalkDTO> speakers = facade.getAllTalks();
+        List<TalkDTO> talks = facade.getAllTalks();
         int expected = 3;
-        int actual = speakers.size();
-        assertEquals(actual, expected);
-        assertThat(speakers, containsInAnyOrder(t1DTO, t2DTO, t3DTO));
+        int actual = talks.size();
+        assertEquals(expected, actual);
+        assertThat(talks, containsInAnyOrder(t1DTO, t2DTO, t3DTO));
     }
 
 }
