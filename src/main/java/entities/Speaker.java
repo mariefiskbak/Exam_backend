@@ -51,6 +51,10 @@ public class Speaker {
         return gender;
     }
 
+    public Set<Talk> getTalkSet() {
+        return talkSet;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }

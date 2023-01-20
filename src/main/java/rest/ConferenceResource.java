@@ -20,6 +20,7 @@ import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.core.UriInfo;
 import java.sql.Date;
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.List;
 
 @Path("/conference")
@@ -42,6 +43,14 @@ public class ConferenceResource {
     public String getAllTalks() {
         List<TalkDTO> talkDTOList = facade.getAllTalks();
         return GSON.toJson(talkDTOList);
+    }
+
+    @Path("allspeakers")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getAllSpeakers() {
+        List<TalkDTO.SpeakerInnerDTO> speakerDTOList = facade.getAllSpeakers();
+        return GSON.toJson(speakerDTOList);
     }
 
     @Path("talks/{conferenceId}")
@@ -104,11 +113,12 @@ public class ConferenceResource {
         String topic = json.get("topic").getAsString();
         int duration = json.get("duration").getAsInt();
         String propsList = json.get("propsList").getAsString();
+        Long addSpeakerId = json.get("speakers").getAsJsonArray().get(0).getAsJsonObject().get("id").getAsLong();
 
         //TODO conference and speakers
 
         Talk talk = new Talk(talkId, topic, duration, propsList);
-        return GSON.toJson(facade.updateTalk(talk));
+        return GSON.toJson(facade.updateTalk(talk, addSpeakerId));
 
     }
 

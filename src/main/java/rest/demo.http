@@ -45,7 +45,13 @@ Content-Type: application/json
 {
   "topic": "Artificial Intelligens",
   "duration": 100,
-  "propsList": "pen"
+  "propsList": "pen",
+  "speakers": [
+    {
+      "id": 3
+    }
+  ]
+
 }
 
 ### get number of users

@@ -33,6 +33,7 @@ public class Talk {
         this.duration = duration;
         this.propsList = propsList;
     }
+
     public Talk(String topic, int duration, String propsList, Conference conference) {
         this.topic = topic;
         this.duration = duration;

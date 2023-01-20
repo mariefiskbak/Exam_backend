@@ -130,6 +130,14 @@ public class TalkDTO implements Serializable {
             this.gender = speaker.getGender();
         }
 
+        public static List<SpeakerInnerDTO> getDTOs(List<Speaker> speakers) {
+            List<SpeakerInnerDTO> speakerDTOList = new ArrayList<>();
+            speakers.forEach(s -> {
+                speakerDTOList.add(new SpeakerInnerDTO(s));
+            });
+            return speakerDTOList;
+        }
+
         public Long getId() {
             return id;
         }

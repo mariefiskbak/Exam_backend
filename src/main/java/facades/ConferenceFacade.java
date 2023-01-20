@@ -2,6 +2,7 @@ package facades;
 
 import dtos.TalkDTO;
 import entities.Conference;
+import entities.Speaker;
 import entities.Talk;
 
 import javax.persistence.EntityManager;
@@ -11,6 +12,7 @@ import javax.persistence.TypedQuery;
 import javax.ws.rs.WebApplicationException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class ConferenceFacade {
 
@@ -49,6 +51,17 @@ public class ConferenceFacade {
         }
 
     }
+    public List<TalkDTO.SpeakerInnerDTO> getAllSpeakers() {
+        EntityManager em = getEntityManager();
+        try {
+            TypedQuery<Speaker> query = em.createQuery("SELECT s FROM Speaker s", Speaker.class);
+            List<Speaker> speakers = query.getResultList();
+            return TalkDTO.SpeakerInnerDTO.getDTOs(speakers);
+        } finally {
+            em.close();
+        }
+    }
+
 
     public List<TalkDTO.ConferenceInnerDTO> getAllConferences() {
         EntityManager em = getEntityManager();
@@ -100,10 +113,12 @@ public class ConferenceFacade {
 
     }
 
-    public TalkDTO updateTalk(Talk talk) {
+    public TalkDTO updateTalk(Talk talk, Long addSpeakerId) {
         EntityManager em = getEntityManager();
 
         Talk oldTalk = em.find(Talk.class, talk.getId());
+        Speaker extraSpeaker = em.find(Speaker.class, addSpeakerId);
+
         if (oldTalk == null) {
             throw new WebApplicationException(String.format("Talk with id: (%d) not found", talk.getId()), 400);
         }
@@ -111,6 +126,12 @@ public class ConferenceFacade {
         oldTalk.setTopic(talk.getTopic());
         oldTalk.setDuration(talk.getDuration());
         oldTalk.setPropsList(talk.getPropsList());
+        Set<Speaker> speakerSet = oldTalk.getSpeakers();
+        Set<Talk> talksSet = extraSpeaker.getTalkSet();
+        speakerSet.add(extraSpeaker);
+        talksSet.add(oldTalk);
+        oldTalk.setSpeakers(speakerSet);
+
 
         try {
             em.getTransaction().begin();
