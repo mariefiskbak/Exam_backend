@@ -87,8 +87,8 @@ public class ConferenceResource {
         String name = json.get("name").getAsString();
         String location = json.get("location").getAsString();
         int capacity = json.get("capacity").getAsInt();
-        Date date = Date.valueOf(json.get("date").getAsString());
-        Time time = Time.valueOf(json.get("time").getAsString() + ":00");
+        String date = json.get("date").getAsString();
+        String time = json.get("time").getAsString() + ":00";
 
         Conference conference = new Conference(name, location, capacity, date, time);
         return GSON.toJson(facade.createConference(conference));
@@ -109,6 +109,16 @@ public class ConferenceResource {
 
         Talk talk = new Talk(talkId, topic, duration, propsList);
         return GSON.toJson(facade.updateTalk(talk));
+
+    }
+
+    @DELETE
+    @Path("deletetalk/{talkId}")
+    @Consumes("application/json")
+    @Produces("application/json")
+    public String deleteTalk(@PathParam("talkId") Long talkId) {
+
+        return GSON.toJson(facade.deleteTalk(talkId));
 
     }
 

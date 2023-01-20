@@ -49,17 +49,16 @@ public class Populator {
         Speaker s3 = new Speaker("Anna Holmes", "Programmer", "Female");
 
 
-        Conference c1 = new Conference("January Summit", "Green Solution House", 300, Date.valueOf("2023-01-25"), Time.valueOf("15:00:00"));
-        Conference c2 = new Conference("Good Health", "Multihuset", 200, Date.valueOf("2023-04-10"), Time.valueOf("11:00:00"));
-        Conference c3 = new Conference("Child development", "Hotel Griffen", 150, Date.valueOf("2023-09-30"), Time.valueOf("10:00:00"));
+        Conference c1 = new Conference("January Summit", "Green Solution House", 300, "2023-01-25", "15:00:00");
+        Conference c2 = new Conference("Good Health", "Multihuset", 200, "2023-04-10", "11:00:00");
+        Conference c3 = new Conference("Child development", "Hotel Griffen", 150, "2023-09-30", "10:00:00");
 
-//TODO conference-id in the constructor?
+
         Talk t1 = new Talk("Breastcancer", 100, "White board, laser pen", c2);
         Talk t2 = new Talk("AI", 70, "laser pen", c1);
         Talk t3 = new Talk("Importance of play", 60, "water, slideshow", c3);
 
 
-        //TODO not working..?
         t1.addSpeaker(s1);
         t2.addSpeaker(s3);
         t3.addSpeaker(s2);

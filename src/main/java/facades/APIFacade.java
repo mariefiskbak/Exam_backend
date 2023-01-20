@@ -25,27 +25,6 @@ public class APIFacade {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //    public OwnerDTO getOwnerById(long id) { //throws RenameMeNotFoundException {
 //        EntityManager em = emf.createEntityManager();
 //        try {

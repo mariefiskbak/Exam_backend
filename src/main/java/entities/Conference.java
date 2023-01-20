@@ -29,12 +29,12 @@ public class Conference {
 
 
 
-    public Conference(String name, String location, int capacity, Date date, Time time) {
+    public Conference(String name, String location, int capacity, String date, String time) {
         this.name = name;
         this.location = location;
         this.capacity = capacity;
-        this.date = date;
-        this.time = time;
+        this.date = Date.valueOf(date);
+        this.time = Time.valueOf(time);
     }
 
     public Long getId() {

@@ -123,4 +123,20 @@ public class ConferenceFacade {
 
 
     }
+
+    public TalkDTO deleteTalk(Long id) {
+        EntityManager em = getEntityManager();
+        Talk talk = em.find(Talk.class, id);
+        if (talk== null) {
+            throw new WebApplicationException(String.format("Talk with id: (%d) not found", id), 404);
+        }
+        try {
+            em.getTransaction().begin();
+            em.remove(talk);
+            em.getTransaction().commit();
+        } finally {
+            em.close();
+        }
+        return new TalkDTO(talk);
+    }
 }
